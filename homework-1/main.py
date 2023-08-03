@@ -31,3 +31,16 @@ try:
         cursor_db.close()
         # Заполнение таблицы customers
 
+        with connect_db.cursor() as cursor_db:
+            with open('north_data/orders_data.csv', encoding='UTF-8') as f:
+                file_dict = csv.DictReader(f, delimiter=',')
+                for line in file_dict:
+                    cursor_db.execute('INSERT INTO orders VALUES (%s, %s, %s, %s, %s)',
+                                (line['order_id'], line['customer_id'], line['employee_id'], line['order_date'],
+                                 line['ship_city']))
+        cursor_db.close()
+        # Заполнение таблицы orders
+
+finally:
+    connect_db.close()
+    # Закрытие коннектора
