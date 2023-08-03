@@ -22,4 +22,12 @@ try:
         cursor_db.close()
         # Заполнение таблицы employees
 
+        with connect_db.cursor() as cursor_db:
+            with open('north_data/customers_data.csv', encoding='UTF-8') as f:
+                file_dict = csv.DictReader(f, delimiter=',')
+                for line in file_dict:
+                    cursor_db.execute('INSERT INTO customers VALUES (%s, %s, %s)',
+                                (line['customer_id'], line['company_name'], line['contact_name']))
+        cursor_db.close()
+        # Заполнение таблицы customers
 
